@@ -1,0 +1,122 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Product {
+    private String productId;
+    private String productName;
+    private int quantity;
+    private double price;
+
+    public Product(String productId, String productName, int quantity, double price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    // Getters and Setters
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product [productId=" + productId + ", productName=" + productName + ", quantity=" + quantity + ", price=" + price + "]";
+    }
+}
+
+class InventoryManager {
+    private Map<String, Product> inventory;
+
+    public InventoryManager() {
+        this.inventory = new HashMap<>();
+    }
+
+    public void addProduct(Product product) {
+        inventory.put(product.getProductId(), product);
+    }
+
+    public void updateProduct(String productId, Product updatedProduct) {
+        if (inventory.containsKey(productId)) {
+            inventory.put(productId, updatedProduct);
+        } else {
+            System.out.println("Product with ID " + productId + " does not exist.");
+        }
+    }
+
+    public void deleteProduct(String productId) {
+        if (inventory.containsKey(productId)) {
+            inventory.remove(productId);
+        } else {
+            System.out.println("Product with ID " + productId + " does not exist.");
+        }
+    }
+
+    public Product getProduct(String productId) {
+        return inventory.get(productId);
+    }
+
+    public void displayInventory() {
+        for (Product product : inventory.values()) {
+            System.out.println(product);
+        }
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        InventoryManager inventoryManager = new InventoryManager();
+
+        // Add products
+        Product product1 = new Product("1", "Laptop", 10, 999.99);
+        Product product2 = new Product("2", "Smartphone", 20, 499.99);
+
+        inventoryManager.addProduct(product1);
+        inventoryManager.addProduct(product2);
+
+        // Display inventory
+        inventoryManager.displayInventory();
+
+        // Update a product
+        Product updatedProduct1 = new Product("1", "Gaming Laptop", 5, 1299.99);
+        inventoryManager.updateProduct("1", updatedProduct1);
+
+        // Display inventory
+        inventoryManager.displayInventory();
+
+        // Delete a product
+        inventoryManager.deleteProduct("2");
+
+        // Display inventory
+        inventoryManager.displayInventory();
+    }
+}
