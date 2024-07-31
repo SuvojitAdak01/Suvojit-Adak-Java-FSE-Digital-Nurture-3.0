@@ -1,0 +1,65 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Customer {
+    private String id;
+    private String name;
+
+    public Customer(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+interface CustomerRepository {
+    Customer findCustomerById(String id);
+}
+
+class CustomerRepositoryImpl implements CustomerRepository {
+    private Map<String, Customer> customers;
+
+    public CustomerRepositoryImpl() {
+        customers = new HashMap<>();
+        customers.put("1", new Customer("1", "John Doe"));
+        customers.put("2", new Customer("2", "Jane Smith"));
+    }
+
+    @Override
+    public Customer findCustomerById(String id) {
+        return customers.get(id);
+    }
+}
+
+class CustomerService {
+    private CustomerRepository customerRepository;
+
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public Customer getCustomer(String id) {
+        return customerRepository.findCustomerById(id);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        CustomerRepository customerRepository = new CustomerRepositoryImpl();
+        CustomerService customerService = new CustomerService(customerRepository);
+
+        Customer customer = customerService.getCustomer("1");
+        if (customer != null) {
+            System.out.println("Customer found: " + customer.getName());
+        } else {
+            System.out.println("Customer not found.");
+        }
+    }
+}
