@@ -1,0 +1,123 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Book {
+    private String bookId;
+    private String title;
+    private String author;
+
+    public Book(String bookId, String title, String author) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    @Override
+    public String toString() {
+        return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + "]";
+    }
+}
+
+class LibraryManager {
+    private List<Book> books;
+
+    public LibraryManager() {
+        books = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    // Linear Search
+    public Book findBookByTitleLinear(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                return book;
+            }
+        }
+        return null; // Book not found
+    }
+
+    // Binary Search (requires sorted list)
+    public Book findBookByTitleBinary(String title) {
+        int left = 0;
+        int right = books.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            Book midBook = books.get(mid);
+
+            int comparison = midBook.getTitle().compareToIgnoreCase(title);
+
+            if (comparison == 0) {
+                return midBook;
+            }
+            if (comparison < 0) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return null; // Book not found
+    }
+
+    // Utility method to sort books by title
+    public void sortBooksByTitle() {
+        books.sort((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()));
+    }
+
+    public void displayBooks() {
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        LibraryManager libraryManager = new LibraryManager();
+
+        // Adding books
+        libraryManager.addBook(new Book("B001", "Effective Java", "Joshua Bloch"));
+        libraryManager.addBook(new Book("B002", "Clean Code", "Robert C. Martin"));
+        libraryManager.addBook(new Book("B003", "Introduction to Algorithms", "Thomas H. Cormen"));
+
+        // Display all books
+        System.out.println("All Books:");
+        libraryManager.displayBooks();
+
+        // Search for a book using linear search
+        Book book = libraryManager.findBookByTitleLinear("Clean Code");
+        if (book != null) {
+            System.out.println("Found with Linear Search: " + book);
+        } else {
+            System.out.println("Book not found with Linear Search.");
+        }
+
+        // Sort books by title and display
+        libraryManager.sortBooksByTitle();
+        System.out.println("Sorted Books:");
+        libraryManager.displayBooks();
+
+        // Search for a book using binary search
+        book = libraryManager.findBookByTitleBinary("Effective Java");
+        if (book != null) {
+            System.out.println("Found with Binary Search: " + book);
+        } else {
+            System.out.println("Book not found with Binary Search.");
+        }
+    }
+}
