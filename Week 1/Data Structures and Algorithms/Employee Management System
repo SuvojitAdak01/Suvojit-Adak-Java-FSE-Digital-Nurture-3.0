@@ -1,0 +1,120 @@
+class Employee {
+    private String employeeId;
+    private String name;
+    private String position;
+    private double salary;
+
+    public Employee(String employeeId, String name, String position, double salary) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.position = position;
+        this.salary = salary;
+    }
+
+    // Getters
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee [employeeId=" + employeeId + ", name=" + name + ", position=" + position + ", salary=" + salary + "]";
+    }
+}
+
+class EmployeeManagementSystem {
+    private Employee[] employees;
+    private int size;
+    
+    public EmployeeManagementSystem(int capacity) {
+        employees = new Employee[capacity];
+        size = 0;
+    }
+
+    // Adding Employee
+    public void addEmployee(Employee employee) {
+        if (size < employees.length) {
+            employees[size] = employee;
+            size++;
+        } else {
+            System.out.println("Array is full. Cannot add more employees.");
+        }
+    }
+
+    // Searching Employee by ID
+    public Employee searchEmployeeById(String employeeId) {
+        for (int i = 0; i < size; i++) {
+            if (employees[i].getEmployeeId().equals(employeeId)) {
+                return employees[i];
+            }
+        }
+        return null; 
+    }
+
+    // Traversing and Displaying Employees
+    public void traverseEmployees() {
+        for (int i = 0; i < size; i++) {
+            System.out.println(employees[i]);
+        }
+    }
+
+    // Delete Employee by ID
+    public void deleteEmployeeById(String employeeId) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (employees[i].getEmployeeId().equals(employeeId)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            for (int i = index; i < size - 1; i++) {
+                employees[i] = employees[i + 1];
+            }
+            employees[size - 1] = null;
+            size--;
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        EmployeeManagementSystem ems = new EmployeeManagementSystem(5);
+
+        // Adding employees
+        ems.addEmployee(new Employee("E001", "Rishi", "Manager", 75000));
+        ems.addEmployee(new Employee("E002", "Bhaskar Das", "Developer", 65000));
+        ems.addEmployee(new Employee("E003", "Suvojit Adak", "Designer", 60000));
+
+        // Displaying all employees
+        System.out.println("All Employees:");
+        ems.traverseEmployees();
+
+        // Searching for an employee
+        Employee emp = ems.searchEmployeeById("E002");
+        if (emp != null) {
+            System.out.println("Employee Found: " + emp);
+        } else {
+            System.out.println("Employee not found.");
+        }
+
+        // Deleting an employee
+        ems.deleteEmployeeById("E003");
+        System.out.println("After Deletion:");
+        ems.traverseEmployees();
+    }
+}
