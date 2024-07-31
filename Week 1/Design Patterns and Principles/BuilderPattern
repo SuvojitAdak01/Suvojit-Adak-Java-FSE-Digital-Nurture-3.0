@@ -1,0 +1,46 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+class Computer{
+    private final String CPU;
+    private final int RAM;
+    private final int storage;
+
+    private Computer(Builder builder){
+        this.CPU = builder.CPU;
+        this.RAM = builder.RAM;
+        this.storage = builder.storage;
+    }
+    @Override
+    public String toString() {
+        return "Computer [CPU=" + CPU + ", RAM=" + RAM + "GB, Storage=" + storage + "GB" + "]";
+    }
+    public static class Builder{
+        private final String CPU;
+        private final int RAM;
+        private final int storage;
+
+        public Builder(String CPU, int RAM, int Storage){
+            this.CPU = CPU;
+            this.RAM = RAM;
+            this.storage = Storage;
+        }
+        public Computer build(){
+            return new Computer(this);
+        }
+    }
+}
+public class BuilderPattern {
+    public static void main(String[] args) {
+        // Create a Computer with required attributes only
+        Computer basicComputer = new Computer.Builder("AMD Ryzen 5", 16, 512).build();
+        System.out.println(basicComputer);
+
+        // Create a Computer with all attributes
+        Computer gamingComputer = new Computer.Builder("AMD Ryzen 7", 8, 256).build();
+        System.out.println(gamingComputer);
+
+        // Create another Computer with different configuration
+        Computer officeComputer = new Computer.Builder("Intel i9", 32, 1024).build();
+        System.out.println(officeComputer);
+    }
+}
