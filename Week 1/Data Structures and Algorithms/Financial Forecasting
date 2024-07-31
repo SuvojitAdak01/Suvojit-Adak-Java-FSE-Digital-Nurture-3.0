@@ -1,0 +1,46 @@
+class FinancialForecastingOptimized {
+    
+    private Map<Integer, Double> memo = new HashMap<>();
+
+   
+    public double predictFutureValue(double presentValue, double growthRate, int periods) {
+        
+        if (periods == 0) {
+            return presentValue;
+        }
+        
+        if (memo.containsKey(periods)) {
+            return memo.get(periods);
+        }
+        
+        double futureValue = predictFutureValue(presentValue * (1 + growthRate), growthRate, periods - 1);
+        
+        memo.put(periods, futureValue);
+        return futureValue;
+    }
+
+    
+    public double predictFutureValueIterative(double presentValue, double growthRate, int periods) {
+        double futureValue = presentValue;
+        for (int i = 0; i < periods; i++) {
+            futureValue *= (1 + growthRate);
+        }
+        return futureValue;
+    }
+
+    public static void main(String[] args) {
+        FinancialForecastingOptimized forecasting = new FinancialForecastingOptimized();
+
+        double presentValue = 1000.0;
+        double growthRate = 0.05; // 5% growth rate
+        int periods = 10;
+
+        // Predicting future value using the recursive method with memoization
+        double futureValueRecursive = forecasting.predictFutureValue(presentValue, growthRate, periods);
+        System.out.println("Predicted Future Value (Recursive): " + futureValueRecursive);
+
+        // Predicting future value using the iterative method
+        double futureValueIterative = forecasting.predictFutureValueIterative(presentValue, growthRate, periods);
+        System.out.println("Predicted Future Value (Iterative): " + futureValueIterative);
+    }
+}
