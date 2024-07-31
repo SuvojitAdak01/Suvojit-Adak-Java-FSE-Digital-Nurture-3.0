@@ -1,0 +1,67 @@
+interface Document{
+    void open();
+}
+class WordDocument implements Document{
+    @Override
+    public void open() {
+        System.out.println("Opening: Word Document");
+    }
+}
+
+class PdfDocument implements Document{
+    @Override
+    public void open() {
+        System.out.println("Opening: PDF Document");
+    }
+}
+
+class ExcelDocument implements Document{
+    @Override
+    public void open() {
+        System.out.println("Opening: Excel Document");
+    }
+}
+
+abstract class DocumentFactory{
+    public abstract Document createDocument();
+}
+
+class WordDocFac extends DocumentFactory{
+    @Override
+    public Document createDocument() {
+        return new WordDocument();
+    }
+}
+
+class PdfDocFac extends DocumentFactory{
+    @Override
+    public Document createDocument(){
+        return new PdfDocument();
+    }
+}
+
+class ExcelDocFac extends DocumentFactory{
+    @Override
+    public Document createDocument(){
+        return new ExcelDocument();
+    }
+}
+public class FactoryMethodTest {
+    public static void main(String[] args) {
+
+        //Created a Word Document using Word Document Factory
+        DocumentFactory wordFac = new WordDocFac();
+        Document wordDoc = wordFac.createDocument();
+        wordDoc.open();
+        
+        //Created a PDF Document using Pdf Document Factory
+        DocumentFactory pdfFac = new PdfDocFac();
+        Document pdfDoc = pdfFac.createDocument();
+        pdfDoc.open();
+        
+        //Created an Excel Document using Excel Document Factory
+        DocumentFactory excelFac = new ExcelDocFac();
+        Document excelDoc = excelFac.createDocument();
+        excelDoc.open();
+    }
+}
