@@ -1,0 +1,66 @@
+interface PaymentStrategy {
+    void pay(double amount);
+}
+
+class CreditCardPayment implements PaymentStrategy {
+    private String cardNumber;
+    private String cardHolderName;
+
+    public CreditCardPayment(String cardNumber, String cardHolderName) {
+        this.cardNumber = cardNumber;
+        this.cardHolderName = cardHolderName;
+    }
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paying $" + amount + " using Credit Card.");
+    }
+}
+
+class PayPalPayment implements PaymentStrategy {
+    private String email;
+
+    public PayPalPayment(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paying $" + amount + " using PayPal.");
+        // Here you can add code to process PayPal payment
+    }
+}
+
+class PaymentContext {
+    private PaymentStrategy paymentStrategy;
+
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void pay(double amount) {
+        if (paymentStrategy != null) {
+            paymentStrategy.pay(amount);
+        } else {
+            System.out.println("Payment strategy not set.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        PaymentContext paymentContext = new PaymentContext();
+
+        // Paying with Credit Card
+        PaymentStrategy creditCardPayment = new CreditCardPayment("1234-5678-9876-5432", "John Doe");
+        paymentContext.setPaymentStrategy(creditCardPayment);
+        paymentContext.pay(100.00);
+
+        System.out.println();
+
+        // Paying with PayPal
+        PaymentStrategy payPalPayment = new PayPalPayment("john.doe@example.com");
+        paymentContext.setPaymentStrategy(payPalPayment);
+        paymentContext.pay(200.00);
+    }
+}
